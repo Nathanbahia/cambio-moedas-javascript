@@ -8,9 +8,12 @@
 	
 		body {
 		    color: #ffffff;
-		    background: #484848;
-		    padding: 30px;
+		    background-color: #54bc97;
+		    background-image: url("img.jpg");			
+			background-repeat: no-repeat;
+			background-size: contain;
 		    font-family: arial;
+		    padding-top: 250px;
 		}
 
 		h1, h4 {
@@ -26,6 +29,12 @@
 			.row {
 				display: flex;		
 				width: 100%;
+			}
+
+			body {
+				background-size: auto;
+				padding: 500px 100px 0 100px;				
+				margin: auto;
 			}
 
 			.row .grafico{		
@@ -152,9 +161,9 @@
 					minValue: 0,
 					maxValue: 7,					
 				},
-				backgroundColor: '#ddd',
-				colors: ["#000000"],
-				lineWidth: 4,
+				backgroundColor: '#fff',
+				colors: ["#ff0000"],
+				lineWidth: 2,
 			};
 
 			let chart = new google.visualization.LineChart(div);
