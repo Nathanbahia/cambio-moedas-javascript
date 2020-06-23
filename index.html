@@ -26,6 +26,33 @@
 			margin-left: 10px;		
 		}
 
+		#infoTable {
+			max-width: 340px;
+			margin: 50px auto;
+			border: solid 2px white;			
+		}
+
+		#infoTable thead {
+			text-align: center;
+			background-color: rgba(1, 1, 1, .1);
+		}
+		#infoTable tbody {
+			background-color: rgba(1, 1, 1, .5);
+		}
+
+		#infoTable td {
+			width: 170px;
+			margin: 0;
+			border: 1px solid grey;
+		}
+		#infoTable tbody td:last-child {
+			text-align: center;			
+		}
+
+		#grafico {
+			background: rgba(1, 1, 1, .1);
+		}
+
 		@media screen and (min-width: 681px) {
 			.row {
 				display: flex;		
@@ -76,26 +103,26 @@
 			</select>
 		</div>
 		<hr>
-		<div class="row">
-			<div class=" grafico">
-				<h4>Dólar (USD)</h4>
-				<div id="chart_div1"></div>
-			</div>
-			<div class=" grafico">
-				<h4>Euro (EUR)</h4>
-				<div id="chart_div2"></div>
-			</div>
+		<div id="divGrafico">
+			<h4>Gráfico</h4>
+			<div id="grafico"></div>
 		</div>
-		<div class="row">
-			<div class=" grafico">
-				<h4>BitCoin (BTC)</h4>
-				<div id="chart_div3"></div>
-			</div>
-			<div class=" grafico">
-				<h4>Dólar Canadense (CAD)</h4>
-				<div id="chart_div4"></div>
-			</div>
-		</div>		
+		<div id="infoTable">
+			<table>
+				<thead>
+					<th>Informações</th>
+					<th>Valores</th>
+				</thead>
+				<tbody>
+					<tr><td>Maior</td>			<td id="maior">1.99</td></tr>
+					<tr><td>Menor</td>			<td id="menor">1.99</td></tr>
+					<tr><td>Média</td>			<td id="media">1.99</td></tr>
+					<tr><td>Mediana</td>		<td id="mediana">1.99</td></tr>
+					<tr><td>Moda</td>			<td id="moda">1.99</td></tr>
+					<tr><td>Desvio Padrão</td>	<td id="desvio">1.99</td></tr>					
+				</tbody>
+			</table>
+		</div>	
 		<hr>
 		<small><b>Fonte: https://economia.awesomeapi.com.br</b></small>
 	</div>
@@ -104,21 +131,13 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script type="text/javascript">
-	let div_chart1 = document.querySelector("#chart_div1");
-	let div_chart2 = document.querySelector("#chart_div2");
-	let div_chart3 = document.querySelector("#chart_div3");
-	let div_chart4 = document.querySelector("#chart_div4");	
-
+	let divGrafico = document.querySelector("#grafico");
 	let select = document.querySelector("select");
 	let dias = select.value;
 	
 	select.addEventListener("change", () => {
 		dias = document.querySelector("select").value;
-		getValues("USD", div_chart1);
-		getValues("EUR", div_chart2);
-		getValues("BTC", div_chart3);
-		getValues("CAD", div_chart4);
-	
+		getValues("USD", divGrafico);
 	})
 
 	function getValues(moeda, div) {
@@ -162,8 +181,8 @@
 					minValue: 0,
 					maxValue: 7,					
 				},
-				backgroundColor: '#fff',
-				colors: ["#ff0000"],
+				backgroundColor: "#FFFFFF",
+				colors: ["#FF0000"],
 				lineWidth: 2,
 			};
 
@@ -172,10 +191,7 @@
 		}
 	}
 	
-	getValues("USD", div_chart1);
-	getValues("EUR", div_chart2);
-	getValues("BTC", div_chart3);
-	getValues("CAD", div_chart4);
+	getValues("USD", divGrafico);
 				   
 </script>
 </body>
