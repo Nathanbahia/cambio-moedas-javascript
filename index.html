@@ -4,15 +4,15 @@
 	<title>Axios e Funções</title>
 	<meta charset="utf-8">
 	<meta name="theme-color" content="#54bc97">
-	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">	
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
 	<style type="text/css">
 	
 		body {
 		    color: #ffffff;
 		    background-color: #54bc97;
-		    background-image: url("img.jpg");			
+		    background-image: url("img.jpg");
 			background-repeat: no-repeat;
-			background-size: contain;
+			background-size: cover;
 		    font-family: arial;
 		    padding-top: 250px;
 		}
@@ -20,16 +20,22 @@
 		h1, h4 {
 			color: #e5f62c;
 		}
+		
+		.filtro {
+		    display: flex;
+		    justify-content: space-between;
+		    margin-bottom: 10px;
+		    width: 330px;
+		}
 
-		select {
-			width: 80px;
-			margin-left: 10px;		
+		.filtro select {
+			width: 150px;
 		}
 
 		#infoTable {
 			max-width: 340px;
-			margin: 50px auto;
-			border: solid 2px white;			
+			margin: 30px auto;
+			border: solid 2px white;
 		}
 
 		#infoTable thead {
@@ -46,7 +52,7 @@
 			border: 1px solid grey;
 		}
 		#infoTable tbody td:last-child {
-			text-align: center;			
+			text-align: center;
 		}
 
 		#grafico {
@@ -54,45 +60,37 @@
 		}
 
 		@media screen and (min-width: 681px) {
-			.row {
-				display: flex;		
-				width: 100%;
-			}
 
 			body {
 				background-size: auto;
-				padding: 500px 100px 0 100px;				
-				margin: auto;
-			}
-
-			.row .grafico{		
-				width: 40%;
+				padding: 500px 100px 0 100px;
 				margin: auto;
 			}
 		}
+		
 
-		@media screen and (max-width: 999px) {
-			.row {
-				display: block;		
-				width: 100%;
-			}
 
-			.row .grafico{		
-				width: 100%;
-				margin: auto;
-			}
-		}
 
 	</style>
 </head>
 
 <body class="bg-dark">
-	<div class="container">		
+	<div class="container">
 		<h1>Axios e Funções</h1>
 		<hr>
-		<div class="form-group w-50 my-3">
+		<div class="filtro">
+			<label style="font-weight: bold;">Moeda: </label>
+			<select id="selecionaMoeda">
+				<option value="USD">Dólar</option>
+				<option value="EUR">Euro</option>
+				<option value="BTC">Bitcoin</option>
+				<option value="JPY">Iêne Japonês</option>
+				<option value="CAD">Dólar Canadense</option>
+			</select>
+		</div>
+		<div class="filtro">
 			<label style="font-weight: bold;">Quantidade de dias: </label>
-			<select class="form-control">
+			<select id="selecionaDias">
 				<option value="7">7</option>
 				<option value="15">15</option>
 				<option value="30">30</option>
@@ -114,15 +112,12 @@
 					<th>Valores</th>
 				</thead>
 				<tbody>
-					<tr><td>Maior</td>			<td id="maior">1.99</td></tr>
-					<tr><td>Menor</td>			<td id="menor">1.99</td></tr>
-					<tr><td>Média</td>			<td id="media">1.99</td></tr>
-					<tr><td>Mediana</td>		<td id="mediana">1.99</td></tr>
-					<tr><td>Moda</td>			<td id="moda">1.99</td></tr>
-					<tr><td>Desvio Padrão</td>	<td id="desvio">1.99</td></tr>					
+					<tr><td>Maior</td>			<td id="maior">0.00</td></tr>
+					<tr><td>Menor</td>			<td id="menor">0.00</td></tr>
+					<tr><td>Média</td>			<td id="media">0.00</td></tr>
 				</tbody>
 			</table>
-		</div>	
+		</div>
 		<hr>
 		<small><b>Fonte: https://economia.awesomeapi.com.br</b></small>
 	</div>
@@ -132,15 +127,38 @@
 
 <script type="text/javascript">
 	let divGrafico = document.querySelector("#grafico");
-	let select = document.querySelector("select");
-	let dias = select.value;
+	let selectDias = document.querySelector("#selecionaDias");
+	let selectMoeda = document.querySelector("#selecionaMoeda");
 	
-	select.addEventListener("change", () => {
-		dias = document.querySelector("select").value;
-		getValues("USD", divGrafico);
-	})
+	let dias = selectDias.value;
+	let moeda = selectMoeda.value;
+	let descMoeda = selecionaMoeda[selecionaMoeda.selectedIndex].innerHTML;
+	
+	let minimo;
+	let maximo;
+	let media;
+	let mediana;
+	let moda;
+	
+	let txtMaximo = document.querySelector("#maior");
+	let txtMinimo = document.querySelector("#menor");
+	let txtMedia = document.querySelector("#media");
+	
+	selectDias.addEventListener("change", () => {
+		dias = selectDias.value;
+		moeda = selectMoeda.value;
+		descMoeda = selecionaMoeda[selecionaMoeda.selectedIndex].innerHTML;
+		getValues(moeda, divGrafico);
+	});
+	
+	selectMoeda.addEventListener("change", () => {
+	    moeda = selectMoeda.value;
+		dias = selectDias.value;
+		descMoeda = selecionaMoeda[selecionaMoeda.selectedIndex].innerHTML;
+		getValues(moeda, divGrafico);
+	});
 
-	function getValues(moeda, div) {
+	function getValues() {
 		axios.get(`https://economia.awesomeapi.com.br/json/daily/${moeda}-BRL/${dias}`)
     		.then(function (response) {
           let valores = [];
@@ -149,7 +167,13 @@
     				valores.push([i, parseFloat(dado.high)]);
     				i--;
     			}
-    			createChart(moeda, valores, div);
+    			createChart(valores);
+    			
+                txtMaximo.textContent = getMaior(valores).toFixed(4);
+                txtMinimo.textContent = getMenor(valores).toFixed(4);
+                txtMedia.textContent = getMedia(valores).toFixed(4);
+                
+
       		})
     
       		.catch(function (error) {
@@ -157,7 +181,7 @@
     		})
 	}
 
-	function createChart(moeda, valores, div) {
+	function createChart(valores) {
 		google.charts.load('current', {packages: ['corechart', 'line']});
 		google.charts.setOnLoadCallback(drawBackgroundColor);
 
@@ -169,29 +193,55 @@
 			data.addRows(valores);
 
 			let options = {
-				height: 400,
-				chartArea: {width: '70%', height: '80%'},
+				height: 250,
+				chartArea: {width: '70%', height: '70%'},
 				legend: "none",
-				title: `Variação do ${moeda} nos útimos ${dias} dias`,
+				title: `Variação do ${descMoeda} nos útimos ${dias} dias`,
 				hAxis: {
-					title: 'Dias',									
+					title: 'Dias',
 				},
 				vAxis: {
 					title: 'Reais',
-					minValue: 0,
-					maxValue: 7,					
 				},
 				backgroundColor: "#FFFFFF",
 				colors: ["#FF0000"],
 				lineWidth: 2,
 			};
 
-			let chart = new google.visualization.LineChart(div);
+			let chart = new google.visualization.LineChart(divGrafico);
 			chart.draw(data, options);
 		}
 	}
 	
-	getValues("USD", divGrafico);
+    function getMenor(lista) {
+        let menor = lista[0][1];
+        for (let i = 0; i < lista.length; i++ ) {
+            if (lista[i][1] < menor && lista[i][1] != menor) {
+                menor = lista[i][1];
+            }
+        }
+    return menor;
+    }
+    
+    function getMaior(lista) {
+        let maior = lista[0][1];
+        for (let i = 0; i < lista.length; i++ ) {
+            if (lista[i][1] > maior && lista[i][1] != maior) {
+                maior = lista[i][1];
+            }
+        }
+    return maior;
+    }
+    
+    function getMedia(lista) {
+        let soma = 0;
+        for (let i = 0; i < lista.length; i++){
+            soma += lista[i][1];
+        }
+        return soma / lista.length;
+    }
+	
+	getValues();
 				   
 </script>
 </body>
