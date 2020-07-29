@@ -172,8 +172,8 @@
                 txtMaximo.textContent = getMaior(valores).toFixed(4);
                 txtMinimo.textContent = getMenor(valores).toFixed(4);
                 txtMedia.textContent = getMedia(valores).toFixed(4);
-			    txtPrim.textContent = valores[0].toFixed(4);
-                txtUlt.textContent = valores[valores.length - 1].toFixed(4);                
+		txtPrim.textContent = valores[0];
+                txtUlt.textContent = valores[valores.length - 1];             
       		})
     
       		.catch(function (error) {
