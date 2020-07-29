@@ -111,7 +111,7 @@
 					<tr><td>Maior</td>			<td id="maior">0.00</td></tr>
 					<tr><td>Menor</td>			<td id="menor">0.00</td></tr>
 					<tr><td>Média</td>			<td id="media">0.00</td></tr>
-					<tr><td>Primeira</td>		<td id="primeira">0.00</td></tr>
+					<tr><td>Primeira</td>			<td id="primeira">0.00</td></tr>
 					<tr><td>Última</td>			<td id="ultima">0.00</td></tr>
 				</tbody>
 			</table>
@@ -172,8 +172,8 @@
                 txtMaximo.textContent = getMaior(valores).toFixed(4);
                 txtMinimo.textContent = getMenor(valores).toFixed(4);
                 txtMedia.textContent = getMedia(valores).toFixed(4);
-		txtPrim.textContent = valores[0];
-                txtUlt.textContent = valores[valores.length - 1];             
+		txtPrim.textContent = valores[valores.length - 1][1].toFixed(4);             
+                txtUlt.textContent = valores[0][1].toFixed(4);
       		})
     
       		.catch(function (error) {
