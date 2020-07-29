@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Axios e Funções</title>
+	<title>Dinheiro Agora!</title>
 	<meta charset="utf-8">
 	<meta name="theme-color" content="#54bc97">
 	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
@@ -67,16 +67,12 @@
 				margin: auto;
 			}
 		}
-		
-
-
-
 	</style>
 </head>
 
 <body class="bg-dark">
 	<div class="container">
-		<h1>Axios e Funções</h1>
+		<h1>Dinheiro Agora!</h1>
 		<hr>
 		<div class="filtro">
 			<label style="font-weight: bold;">Moeda: </label>
@@ -115,6 +111,8 @@
 					<tr><td>Maior</td>			<td id="maior">0.00</td></tr>
 					<tr><td>Menor</td>			<td id="menor">0.00</td></tr>
 					<tr><td>Média</td>			<td id="media">0.00</td></tr>
+					<tr><td>Primeira</td>		<td id="primeira">0.00</td></tr>
+					<tr><td>Última</td>			<td id="ultima">0.00</td></tr>
 				</tbody>
 			</table>
 		</div>
@@ -143,6 +141,8 @@
 	let txtMaximo = document.querySelector("#maior");
 	let txtMinimo = document.querySelector("#menor");
 	let txtMedia = document.querySelector("#media");
+	let txtPrim = document.querySelector("#primeira");
+	let txtUlt = document.querySelector("#ultima");
 	
 	selectDias.addEventListener("change", () => {
 		dias = selectDias.value;
@@ -172,8 +172,8 @@
                 txtMaximo.textContent = getMaior(valores).toFixed(4);
                 txtMinimo.textContent = getMenor(valores).toFixed(4);
                 txtMedia.textContent = getMedia(valores).toFixed(4);
-                
-
+			    txtPrim.textContent = valores[0].toFixed(4);
+                txtUlt.textContent = valores[valores.length - 1].toFixed(4);                
       		})
     
       		.catch(function (error) {
@@ -193,7 +193,7 @@
 			data.addRows(valores);
 
 			let options = {
-				height: 250,
+				height: 300,
 				chartArea: {width: '70%', height: '70%'},
 				legend: "none",
 				title: `Variação do ${descMoeda} nos útimos ${dias} dias`,
